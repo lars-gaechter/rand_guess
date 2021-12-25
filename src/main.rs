@@ -1,18 +1,21 @@
 use rand::Rng;
-use std::io;
 use std::cmp::Ordering;
+use std::io;
 fn main() {
-    let rand = rand::thread_rng().gen_range(1..101);
-    println!("Guess!");
+    println!("I choose a number between 0 and 100");
+    let rand = rand::thread_rng().gen_range(0..=100);
+    println!("Guess which number I choose!");
     loop {
         let mut input = String::new();
-        match io::stdin().read_line(&mut input) {
-            Ok(_) => {},
-            Err(error) => println!("error: {}", error),
-        }
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
         let input: u32 = match input.trim().parse() {
             Ok(num) => num,
-            Err(_) => continue,
+            Err(_) => {
+                println!("That's not a valid number :(");
+                continue;
+            }
         };
         println!("You guess {}", input);
         match input.cmp(&rand) {
